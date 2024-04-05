@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  app:
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_CLIENTVAR: "clientvar"
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    image: t3-app
+    restart: always
+    environment:
+      - DATABASE_URL="postgres://addin:B0ClBsfJ3EFDvBojKBKpXMYI7qR1gGv4@dpg-co4ncmq1hbls73bvamgg-a/next_starter_e4l6"
+
+  db:
+    platform: "linux/amd64"
+    image: postgres:alpine3.19
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: B0ClBsfJ3EFDvBojKBKpXMYI7qR1gGv4
+      POSTGRES_DB: next_starter_e4l6
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+    external: true
